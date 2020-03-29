@@ -1,0 +1,45 @@
+{
+    "name": "chrisjk123/laravel-projects",
+    "description": "Laravel section builder package",
+    "type": "library",
+    "require": {
+        "laravel/framework": "^7.3",
+        "php": "^7.2"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^5.1",
+        "phpunit/phpunit": "^8.5"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "chrisjk123",
+            "email": "chris_j_kelker@hotmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Chriscreates\\Projects\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Chriscreates\\Projects\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Chriscreates\\Projects\\ProjectsServiceProvider"
+            ]
+        }
+    }
+}
