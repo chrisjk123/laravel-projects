@@ -13,14 +13,27 @@ class CreateProjectsTable extends Migration
      */
     public function up()
     {
-        Schema::create('projects', function (Blueprint $table) {
+        $user_class = config('projects.user_class');
+        $user_model = new $user_class;
+
+        Schema::create('projects', function (Blueprint $table) use ($user_model) {
             $table->bigIncrements('id');
-            $table->string('name');
+
+            $table->bigInteger('user_id')->unsigned()->nullable();
+            $table->foreign('user_id')
+            ->references($user_model->getKeyName())
+            ->on($user_model->getTable());
+
+            $table->bigInteger('status_id')->unsigned()->nullable();
+            $table->foreign('status_id')
+            ->references('id')
+            ->on('statuses');
+
+            $table->string('title');
             $table->text('description')->nullable();
             $table->text('notes')->nullable();
             $table->integer('visible')->default(1)->nullable();
             $table->integer('type')->nullable();
-            $table->string('status')->nullable();
             $table->timestamp('started_at')->nullable();
             $table->timestamp('delivered_at')->nullable();
             $table->timestamp('expected_at')->nullable();
@@ -33,18 +46,21 @@ class CreateProjectsTable extends Migration
             $table->integer('project_id');
             $table->integer('projectable_id');
             $table->string('projectable_type');
-            $table->timestamps();
         });
 
-        $user_class = config('projects.user_class');
-        $user_table = (new $user_class)->getTable();
-
-        Schema::create('project_users', function (Blueprint $table) {
+        Schema::create('project_users', function (Blueprint $table) use ($user_model) {
             $table->increments('id');
+
             $table->bigInteger('project_id')->unsigned();
-            $table->foreign('project_id')->references('id')->on('projects');
+            $table->foreign('project_id')
+            ->references('id')
+            ->on('projects');
+
             $table->bigInteger('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on($user_table);
+            $table->foreign('user_id')
+            ->references($user_model->getKeyName())
+            ->on($user_model->getTable());
+
             $table->string('status')->nullable();
             $table->string('role')->nullable();
         });
@@ -57,6 +73,8 @@ class CreateProjectsTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('project_users');
+
         Schema::dropIfExists('projectables');
 
         Schema::dropIfExists('projects');

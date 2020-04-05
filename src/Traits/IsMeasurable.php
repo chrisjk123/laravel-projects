@@ -5,7 +5,7 @@ namespace Chriscreates\Projects\Traits;
 trait IsMeasurable
 {
     /**
-     * Has the project got an expected target.
+     * Has the task got an expected target.
      *
      * @return bool
      */
@@ -15,7 +15,7 @@ trait IsMeasurable
     }
 
     /**
-     * Is the project complete.
+     * Is the task complete.
      *
      * @return bool
      */
@@ -33,7 +33,7 @@ trait IsMeasurable
     }
 
     /**
-     * Was the project completed after the given deadline.
+     * Was the task completed after the given deadline.
      *
      * @return bool
      */
@@ -43,7 +43,7 @@ trait IsMeasurable
     }
 
     /**
-     * Was the project completed before the given deadline.
+     * Was the task completed before the given deadline.
      *
      * @return bool
      */
@@ -53,7 +53,7 @@ trait IsMeasurable
     }
 
     /**
-     * Was the project completed before or on the given deadline.
+     * Was the task completed before or on the given deadline.
      *
      * @return bool
      */
@@ -63,7 +63,7 @@ trait IsMeasurable
     }
 
     /**
-     * Is the project still in process.
+     * Is the task still in process.
      *
      * @return bool
      */
@@ -73,7 +73,7 @@ trait IsMeasurable
     }
 
     /**
-     * Is the project overdue.
+     * Is the task overdue.
      *
      * @return bool
      */
@@ -83,11 +83,11 @@ trait IsMeasurable
     }
 
     /**
-     * Is the project not due yet.
+     * Is the task not due yet.
      *
      * @return bool
      */
-    public function notDueYet()
+    public function notDueYet() : bool
     {
         return $this->expected_at->lessThan(now());
     }

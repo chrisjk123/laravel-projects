@@ -7,6 +7,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 trait HasUsers
 {
     /**
+     * @return Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function users() : BelongsToMany
+    {
+        return $this->belongsToMany(config('projects.user_class'), 'project_users', 'user_id', 'project_id');
+    }
+
+    /**
      * Add a user to the current Project.
      *
      * @param  string|int|\Illuminate\Database\Eloquent\Model $user
@@ -83,13 +91,5 @@ trait HasUsers
     public function hasUser($user) : bool
     {
         return $this->users->contains('id', $user instanceof $this->user_model ? $user->id : $user);
-    }
-
-    /**
-     * @return Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function users() : BelongsToMany
-    {
-        return $this->belongsToMany(config('projects.user_class'), 'project_users', 'user_id', 'project_id');
     }
 }
