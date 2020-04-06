@@ -3,6 +3,7 @@
 namespace Chriscreates\Projects\Traits;
 
 use Chriscreates\Projects\Models\Status;
+use Illuminate\Database\Eloquent\Builder;
 
 trait HasStatus
 {
@@ -62,5 +63,38 @@ trait HasStatus
         }
 
         $this->status()->save($status);
+    }
+
+    /**
+     * Scope - return any model where status.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  string|int|\Chriscreates\Projects\Models\Status $status
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWhereHasStatus(Builder $query, $status)
+    {
+        $key = ! is_string($status) ? 'id' : 'name';
+
+        $status = $status instanceof Status ? $status->id : $status;
+
+        return $query->whereHas('status', function ($query) use ($key, $status) {
+            return $query->where($key, $status);
+        });
+    }
+
+    /**
+     * Scope - return any model whereIn statuses.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  string                  $key
+     * @param  array                   $statuses
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWhereHasAnyStatus(Builder $query, string $key, array $statuses)
+    {
+        return $query->whereHas('status', function ($query) use ($key, $statuses) {
+            return $query->whereIn($key, $statuses);
+        });
     }
 }

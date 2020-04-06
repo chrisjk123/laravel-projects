@@ -63,4 +63,37 @@ trait HasPriority
 
         $this->priority()->save($priority);
     }
+
+    /**
+     * Scope - return any model where priority.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  string|int|\Chriscreates\Projects\Models\Priority $priority
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWhereHasPriority(Builder $query, $priority)
+    {
+        $key = ! is_string($priority) ? 'id' : 'name';
+
+        $priority = $priority instanceof Priority ? $priority->id : $priority;
+
+        return $query->whereHas('priority', function ($query) use ($key, $priority) {
+            return $query->where($key, $priority);
+        });
+    }
+
+    /**
+     * Scope - return any model whereIn priorities.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  string                  $key
+     * @param  array                   $priorities
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWhereHasAnyPriority(Builder $query, string $key, array $priorities)
+    {
+        return $query->whereHas('priority', function ($query) use ($key, $priorities) {
+            return $query->whereIn($key, $priorities);
+        });
+    }
 }

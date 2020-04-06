@@ -2,6 +2,8 @@
 
 namespace Chriscreates\Projects;
 
+use Chriscreates\Projects\Commands\ProjectsConfigCommand;
+use Chriscreates\Projects\Commands\ProjectsSeederCommand;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Support\ServiceProvider;
@@ -20,11 +22,9 @@ class ProjectsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->handleEvents();
+        $this->bootEvents();
 
         $this->handleMigrations();
-
-        $this->handlePublishing();
     }
 
     /**
@@ -34,7 +34,11 @@ class ProjectsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->handleConfig();
+        $this->registerCommands();
+
+        foreach (glob(__DIR__.'/Helpers/*.php') as $file) {
+            require_once($file);
+        }
     }
 
     /**
@@ -43,7 +47,7 @@ class ProjectsServiceProvider extends ServiceProvider
      * @return void
      * @throws BindingResolutionException
      */
-    private function handleEvents()
+    private function bootEvents()
     {
         $events = $this->app->make(Dispatcher::class);
 
@@ -67,31 +71,13 @@ class ProjectsServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the package's publishable resources.
-     *
      * @return void
      */
-    private function handlePublishing()
+    private function registerCommands()
     {
-        if ($this->app->runningInConsole()) {
-            $this->publishes([
-                __DIR__.'/../database/factories/' => database_path('factories'),
-            ], 'project-factories');
-
-            $this->publishes([
-                __DIR__.'/../config/projects.php' => config_path('projects.php'),
-            ], 'projects-config');
-        }
-    }
-
-    /**
-     * @return void
-     */
-    private function handleConfig()
-    {
-        $this->mergeConfigFrom(
-            __DIR__.'/../config/projects.php',
-            'config'
-        );
+        $this->commands([
+            ProjectsConfigCommand::class,
+            ProjectsSeederCommand::class,
+        ]);
     }
 }
