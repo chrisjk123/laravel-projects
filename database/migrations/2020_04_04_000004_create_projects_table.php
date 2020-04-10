@@ -13,16 +13,13 @@ class CreateProjectsTable extends Migration
      */
     public function up()
     {
-        $user_class = config('projects.user_class');
-        $user_model = new $user_class;
-
-        Schema::create('projects', function (Blueprint $table) use ($user_model) {
+        Schema::create('projects', function (Blueprint $table) {
             $table->bigIncrements('id');
 
             $table->bigInteger('user_id')->unsigned()->nullable();
             $table->foreign('user_id')
-            ->references($user_model->getKeyName())
-            ->on($user_model->getTable());
+            ->references(user_model()->getKeyName())
+            ->on(user_model()->getTable());
 
             $table->bigInteger('status_id')->unsigned()->nullable();
             $table->foreign('status_id')
@@ -48,7 +45,7 @@ class CreateProjectsTable extends Migration
             $table->string('projectable_type');
         });
 
-        Schema::create('project_users', function (Blueprint $table) use ($user_model) {
+        Schema::create('project_users', function (Blueprint $table) {
             $table->increments('id');
 
             $table->bigInteger('project_id')->unsigned();
@@ -58,8 +55,8 @@ class CreateProjectsTable extends Migration
 
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')
-            ->references($user_model->getKeyName())
-            ->on($user_model->getTable());
+            ->references(user_model()->getKeyName())
+            ->on(user_model()->getTable());
 
             $table->string('status')->nullable();
             $table->string('role')->nullable();

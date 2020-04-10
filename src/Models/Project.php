@@ -31,6 +31,10 @@ class Project extends Model
         'expected_at',
     ];
 
+    protected $casts = [
+        'visible' => 'boolean',
+    ];
+
     public function __construct(array $attributes = [])
     {
         $this->user_model = config('projects.user_class');
@@ -50,7 +54,12 @@ class Project extends Model
 
     public function isVisible() : bool
     {
-        return $this->visible;
+        return $this->attributes['visible'] == true;
+    }
+
+    public function isNotVisible() : bool
+    {
+        return $this->attributes['visible'] == false;
     }
 
     public function dueIn(string $format = 'days') : int

@@ -17,6 +17,9 @@
             "email": "chris_j_kelker@hotmail.com"
         }
     ],
+    "classmap": [
+        "database"
+    ],
     "autoload": {
         "psr-4": {
             "Chriscreates\\Projects\\": "src"

@@ -5,13 +5,15 @@ namespace Chriscreates\Projects\Models;
 use Chriscreates\Projects\Traits\HasPriority;
 use Chriscreates\Projects\Traits\HasStatus;
 use Chriscreates\Projects\Traits\IsMeasurable;
+use Chriscreates\Projects\Traits\IsRecordable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Task extends Model
 {
-    use IsMeasurable, HasStatus, HasPriority;
+    use IsMeasurable, IsRecordable, HasStatus, HasPriority;
 
     protected $table = 'tasks';
 
@@ -40,5 +42,10 @@ class Task extends Model
     public function projects() : MorphToMany
     {
         return $this->morphToMany(Project::class, 'projectable');
+    }
+
+    public function records() : MorphMany
+    {
+        return $this->morphMany(Record::class, 'recordable');
     }
 }

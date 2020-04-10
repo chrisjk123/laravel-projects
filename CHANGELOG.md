@@ -4,7 +4,7 @@ All notable changes to `laravel-projects` will be documented in this file
 
 ## 0.0.1 - 29-03-2020
 
-- Initial release
+- Initial setup
 
 ## 0.0.2 - 05-04-2020
 
@@ -17,6 +17,13 @@ All notable changes to `laravel-projects` will be documented in this file
 - Setup README.md
 - Publishing config and seeder
 - Statuses and Priorities scopes
+
+## 0.0.4 - 10-04-2020
+
+- Are project tasks recordable
+- PHPUnit tests
+- Cleaning up migrations
+- Adhering to PHP standards of class dependancy inject and method Return Type Declarations
 
 ### TODO/WIP:
 

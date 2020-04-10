@@ -42,12 +42,24 @@ class CreateTasksTable extends Migration
             $table->timestamps();
         });
 
-        // TODO:
-        // table - task_time
-        // task_id
-        // user_id
-        // time_spent
-        // timestamps
+        Schema::create('records', function (Blueprint $table) {
+            $table->bigIncrements('id');
+
+            $table->bigInteger('user_id')->unsigned()->nullable();
+            $table->foreign('user_id')
+            ->references(user_model()->getKeyName())
+            ->on(user_model()->getTable());
+
+            $table->integer('recordable_id');
+            $table->string('recordable_type');
+
+            $table->integer('time_spent')->nullable();
+            $table->timestamp('time_from')->nullable();
+            $table->timestamp('time_to')->nullable();
+
+            $table->text('comments')->nullable();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -57,6 +69,8 @@ class CreateTasksTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('records');
+
         Schema::dropIfExists('tasks');
     }
 }

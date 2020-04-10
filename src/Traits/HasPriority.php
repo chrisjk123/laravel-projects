@@ -3,6 +3,7 @@
 namespace Chriscreates\Projects\Traits;
 
 use Chriscreates\Projects\Models\Priority;
+use Illuminate\Database\Eloquent\Builder;
 
 trait HasPriority
 {

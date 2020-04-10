@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'user_class' => App\User::class,
+    'user_class' => Chriscreates\Projects\Models\User::class,
 
     'owner_role' => 'owner',
 ];
