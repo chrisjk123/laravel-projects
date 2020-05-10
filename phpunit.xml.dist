@@ -10,12 +10,12 @@
          processIsolation="false"
          stopOnFailure="false">
     <testsuites>
-        <testsuite name="Chriscreates Test Suite">
-            <directory>tests</directory>
-        </testsuite>
+       <testsuite name="Spatie Test Suite">
+           <directory>tests</directory>
+       </testsuite>
     </testsuites>
     <filter>
-        <whitelist>
+        <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">src/</directory>
         </whitelist>
     </filter>

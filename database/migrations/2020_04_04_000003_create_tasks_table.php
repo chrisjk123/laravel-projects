@@ -53,7 +53,7 @@ class CreateTasksTable extends Migration
             $table->integer('recordable_id');
             $table->string('recordable_type');
 
-            $table->integer('time_spent')->nullable();
+            $table->time('time_spent', 0);
             $table->timestamp('time_from')->nullable();
             $table->timestamp('time_to')->nullable();
 

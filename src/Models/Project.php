@@ -8,7 +8,7 @@ use Chriscreates\Projects\Traits\HasStatus;
 use Chriscreates\Projects\Traits\HasUsers;
 use Chriscreates\Projects\Traits\IsMeasurable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Project extends Model
@@ -42,14 +42,19 @@ class Project extends Model
         parent::__construct($attributes);
     }
 
+    public function owner() : BelongsTo
+    {
+        return $this->belongsTo(user_model());
+    }
+
+    public function status() : BelongsTo
+    {
+        return $this->belongsTo(Status::class);
+    }
+
     public function tasks() : MorphToMany
     {
         return $this->morphedByMany(Task::class, 'projectable');
-    }
-
-    public function status() : HasOne
-    {
-        return $this->hasOne(Status::class, 'id', 'status_id');
     }
 
     public function isVisible() : bool

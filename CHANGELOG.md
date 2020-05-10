@@ -25,6 +25,11 @@ All notable changes to `laravel-projects` will be documented in this file
 - Cleaning up migrations
 - Adhering to PHP standards of class dependancy inject and method Return Type Declarations
 
+## 0.0.5 - 10-05-2020
+
+- Refactor PHPUnit tests
+- WIP: Necessary relations for tasks, owner and status
+
 ### TODO/WIP:
 
 - Scopes
