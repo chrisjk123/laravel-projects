@@ -44,7 +44,7 @@ class Project extends Model
 
     public function owner() : BelongsTo
     {
-        return $this->belongsTo(user_model());
+        return $this->belongsTo(get_class(user_model()));
     }
 
     public function status() : BelongsTo

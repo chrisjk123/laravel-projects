@@ -11,7 +11,7 @@ trait HasUsers
      */
     public function users() : BelongsToMany
     {
-        return $this->belongsToMany(user_model(), 'project_users', 'user_id', 'project_id');
+        return $this->belongsToMany(get_class(user_model()), 'project_users', 'user_id', 'project_id');
     }
 
     /**

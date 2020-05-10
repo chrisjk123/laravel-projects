@@ -11,7 +11,7 @@ trait HasProjects
 
     public function projects() : BelongsToMany
     {
-        return $this->belongsToMany(config('projects.user_class'), 'project_users', 'user_id', 'project_id');
+        return $this->belongsToMany(get_class(config('projects.user_class')), 'project_users', 'user_id', 'project_id');
     }
 
     /**
