@@ -5,11 +5,13 @@ namespace Chriscreates\Projects;
 use Chriscreates\Projects\Commands\ProjectsConfigCommand;
 use Chriscreates\Projects\Commands\ProjectsSeederCommand;
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Support\ServiceProvider;
 
 class ProjectsServiceProvider extends ServiceProvider
 {
+
     /**
        * All of the event / listener mappings.
        *
@@ -24,7 +26,14 @@ class ProjectsServiceProvider extends ServiceProvider
     {
         $this->bootEvents();
 
+        $this->bootFactories(projects_base_path('/database/factories'));
+
         $this->handleMigrations();
+    }
+
+    protected function bootFactories($path)
+    {
+        $this->app->make(Factory::class)->load($path);
     }
 
     /**
@@ -65,8 +74,12 @@ class ProjectsServiceProvider extends ServiceProvider
      */
     private function handleMigrations()
     {
+        if ($this->app->runningUnitTests()) {
+            $this->loadMigrationsFrom(projects_base_path('/database/test_migrations'));
+        }
+
         if ($this->app->runningInConsole()) {
-            $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+            $this->loadMigrationsFrom(projects_base_path('/database/migrations'));
         }
     }
 

@@ -9,6 +9,8 @@ function projects_config_published()
 
 function projects_base_path(string $append = '') : string
 {
+    $append = Str::start($append, '/');
+
     return Str::replaceLast('/src/Helpers', '', dirname(__FILE__)).$append;
 }
 

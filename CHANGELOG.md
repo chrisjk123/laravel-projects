@@ -30,6 +30,11 @@ All notable changes to `laravel-projects` will be documented in this file
 - Refactor PHPUnit tests
 - WIP: Necessary relations for tasks, owner and status
 
+## 0.0.6 - 11-05-2020
+
+- Added necessary factory faker classes for testing purposes
+- Started basic PHPUnit tests for Projects and Tasks
+
 ### TODO/WIP:
 
 - Scopes

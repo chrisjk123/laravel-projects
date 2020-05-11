@@ -16,13 +16,11 @@ class CreateProjectsTable extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->bigInteger('user_id')->unsigned()->nullable();
-            $table->foreign('user_id')
+            $table->foreignId('user_id')->nullable()
             ->references(user_model()->getKeyName())
             ->on(user_model()->getTable());
 
-            $table->bigInteger('status_id')->unsigned()->nullable();
-            $table->foreign('status_id')
+            $table->foreignId('status_id')->nullable()
             ->references('id')
             ->on('statuses');
 
@@ -47,13 +45,11 @@ class CreateProjectsTable extends Migration
         Schema::create('project_users', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->bigInteger('project_id')->unsigned();
-            $table->foreign('project_id')
+            $table->foreignId('project_id')
             ->references('id')
             ->on('projects');
 
-            $table->bigInteger('user_id')->unsigned();
-            $table->foreign('user_id')
+            $table->foreignId('user_id')
             ->references(user_model()->getKeyName())
             ->on(user_model()->getTable());
 

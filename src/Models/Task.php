@@ -7,7 +7,7 @@ use Chriscreates\Projects\Traits\HasStatus;
 use Chriscreates\Projects\Traits\IsMeasurable;
 use Chriscreates\Projects\Traits\IsRecordable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
@@ -29,14 +29,19 @@ class Task extends Model
         'expected_at',
     ];
 
-    public function status() : HasOne
+    public function creator() : BelongsTo
     {
-        return $this->hasOne(Status::class, 'id', 'status_id');
+        return $this->belongsTo(get_class(user_model()));
     }
 
-    public function priority() : HasOne
+    public function status() : BelongsTo
     {
-        return $this->hasOne(Priority::class, 'id', 'priority_id');
+        return $this->belongsTo(Status::class);
+    }
+
+    public function priority() : BelongsTo
+    {
+        return $this->belongsTo(Priority::class);
     }
 
     public function projects() : MorphToMany

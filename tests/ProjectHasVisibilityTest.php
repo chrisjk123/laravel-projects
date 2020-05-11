@@ -3,16 +3,16 @@
 namespace Chriscreates\Projects\Tests;
 
 use Chriscreates\Projects\Models\Project;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ProjectHasVisibilityTest extends TestCase
 {
+    use RefreshDatabase;
+
     /** @test */
     public function it_is_visible()
     {
-        $project = Project::create([
-            'title' => 'string2',
-            'visible' => true,
-        ]);
+        $project = factory(Project::class)->create(['visible' => true]);
 
         $this->assertTrue($project->isVisible());
 
@@ -22,10 +22,7 @@ class ProjectHasVisibilityTest extends TestCase
     /** @test */
     public function it_is_not_visible()
     {
-        $project = Project::create([
-            'title' => 'string2',
-            'visible' => false,
-        ]);
+        $project = factory(Project::class)->create(['visible' => false]);
 
         $this->assertFalse($project->isVisible());
 
@@ -35,10 +32,7 @@ class ProjectHasVisibilityTest extends TestCase
     /** @test */
     public function it_has_been_made_visible()
     {
-        $project = Project::create([
-            'title' => 'string2',
-            'visible' => false,
-        ]);
+        $project = factory(Project::class)->create(['visible' => 0]);
 
         $this->assertFalse($project->isVisible());
 
@@ -50,10 +44,7 @@ class ProjectHasVisibilityTest extends TestCase
     /** @test */
     public function it_has_been_made_not_visible()
     {
-        $project = Project::create([
-            'title' => 'string2',
-            'visible' => true,
-        ]);
+        $project = factory(Project::class)->create(['visible' => true]);
 
         $this->assertTrue($project->isVisible());
 

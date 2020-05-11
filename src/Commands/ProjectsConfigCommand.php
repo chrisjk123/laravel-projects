@@ -50,7 +50,7 @@ class ProjectsConfigCommand extends Command
         $this->line('Copying projects config file.');
 
         // Copy from file to file and replacing if exists
-        copy(__DIR__.'/../../config/projects.php', config_path('projects.php'));
+        copy(projects_base_path('/config/projects.php'), config_path('projects.php'));
 
         $this->info('Pasted projects config file.');
     }

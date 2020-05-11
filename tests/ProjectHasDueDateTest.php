@@ -3,14 +3,16 @@
 namespace Chriscreates\Projects\Tests;
 
 use Chriscreates\Projects\Models\Project;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ProjectHasDueDateTest extends TestCase
 {
+    use RefreshDatabase;
+
     /** @test */
     public function it_is_due_in_days()
     {
-        $project = Project::create([
-            'title' => 'Title',
+        $project = factory(Project::class)->create([
             'started_at' => now()->subMonths(4),
             'expected_at' => now()->addMonth(1),
         ]);
@@ -24,8 +26,7 @@ class ProjectHasDueDateTest extends TestCase
     /** @test */
     public function it_is_due_in_months()
     {
-        $project = Project::create([
-            'title' => 'Title',
+        $project = factory(Project::class)->create([
             'started_at' => now()->subMonths(4),
             'expected_at' => now()->addMonth(1),
         ]);
@@ -39,8 +40,7 @@ class ProjectHasDueDateTest extends TestCase
     /** @test */
     public function it_is_due_in_years()
     {
-        $project = Project::create([
-            'title' => 'Title',
+        $project = factory(Project::class)->create([
             'started_at' => now()->subMonths(12),
             'expected_at' => now()->addMonth(1),
         ]);

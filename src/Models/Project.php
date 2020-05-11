@@ -32,7 +32,7 @@ class Project extends Model
     ];
 
     protected $casts = [
-        'visible' => 'boolean',
+        'visible' => 'bool',
     ];
 
     public function __construct(array $attributes = [])
@@ -84,5 +84,26 @@ class Project extends Model
         }
 
         return $this->started_at->$method($this->expected_at);
+    }
+
+    public function assignTask(Task $task) : void
+    {
+        $this->tasks()->save($task);
+
+        $this->refresh();
+    }
+
+    public function removeTask(Task $task) : void
+    {
+        $this->tasks()->detach($task);
+
+        $this->refresh();
+    }
+
+    public function hasTask(Task $task) : bool
+    {
+        $this->refresh();
+
+        return $this->tasks->contains($task->id);
     }
 }
