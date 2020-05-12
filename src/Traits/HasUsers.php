@@ -76,7 +76,7 @@ trait HasUsers
     public function removeUsers(array $users = []) : self
     {
         $keyed = collect($users)
-        ->map(function ($user) use ($user_model) {
+        ->map(function ($user) {
             return is_a($user, user_model()) ? $user->id : $user;
         })->toArray();
 

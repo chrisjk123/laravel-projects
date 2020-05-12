@@ -20,13 +20,16 @@ class CreateRecordsTable extends Migration
             ->references(user_model()->getKeyName())
             ->on(user_model()->getTable());
 
-            $table->integer('recordable_id');
-            $table->string('recordable_type');
+            $table->morphs('recordable');
 
-            $table->timestamp('time_from');
-            $table->timestamp('time_to');
+            $table->timestamp('time_from')->nullable();
+            $table->timestamp('time_to')->nullable();
 
-            $table->text('comments')->nullable();
+            $table->decimal('add_hours', 10, 2)->nullable();
+            $table->decimal('deduct_hours', 10, 2)->nullable();
+            $table->boolean('deductable')->nullable();
+
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

@@ -23,6 +23,7 @@ class Task extends Model
 
     protected $casts = [
         'complete' => 'bool',
+        'deduct_hours' => 'integer',
     ];
 
     public function creator() : BelongsTo
@@ -60,5 +61,44 @@ class Task extends Model
     public function completed() : bool
     {
         return $this->attributes['complete'];
+    }
+
+    public function recordTime($from, $to) : void
+    {
+        $this->records()->create([
+            'time_from' => $from,
+            'time_to' => $to,
+        ]);
+
+        $this->refresh();
+    }
+
+    public function removeRecord(Record $record) : void
+    {
+        if ($record = $this->records->firstWhere('id', $record->id)) {
+            $record->delete();
+        }
+
+        $this->refresh();
+    }
+
+    public function deductHours($time) : void
+    {
+        $this->records()->create([
+            'deduct_hours' => (float) $time,
+            'deductable' => true,
+        ]);
+
+        $this->refresh();
+    }
+
+    public function addHours($time) : void
+    {
+        $record = $this->records()->create([
+            'add_hours' => (float) $time,
+            'deductable' => false,
+        ]);
+
+        $this->refresh();
     }
 }

@@ -10,19 +10,19 @@ use Illuminate\Database\Seeder;
 
 class ProjectsSeeder extends Seeder
 {
+    private $statuses = [
+        'Done',
+        'In Progress',
+        'Not Started',
+        'Cancalled',
+    ];
+
     private $priorities = [
         'Low',
         'Minor',
         'Moderate',
         'Significant',
         'Required',
-    ];
-
-    private $statuses = [
-        'Done',
-        'In Progress',
-        'Not Started',
-        'Cancalled',
     ];
 
     /**
@@ -32,41 +32,26 @@ class ProjectsSeeder extends Seeder
      */
     public function run()
     {
-        $project1 = Project::firstOrCreate(
-            ['title' => 'Project One'],
-            [
-                'started_at' => now()->subMonth(),
-                'delivered_at' => now(),
-                'expected_at' => now(),
-            ]
-        );
+        $statuses = collect($this->statuses)
+        ->map(function ($status) {
+            return factory(Status::class)->create(['name' => $status]);
+        });
 
-        $project2 = Project::firstOrCreate(
-            ['title' => 'Project Two'],
-            [
-                'started_at' => now(),
-                'delivered_at' => now()->addMonth(1),
-                'expected_at' => now()->addMonth(2),
-            ]
-        );
+        $priorities = collect($this->priorities)
+        ->map(function ($priority) {
+            return factory(Priority::class)->create(['name' => $priority]);
+        });
 
-        for ($x = 0; $x <= 10; $x++) {
-            Task::firstOrCreate(
-                ['title' => 'Test title'.$x],
-                [
-                    'started_at' => now()->subMonth(),
-                    'delivered_at' => now(),
-                    'expected_at' => now(),
-                ]
-            );
-        }
+        $project = factory(Project::class)->create([
+            'started_at' => now()->subMonth(),
+            'delivered_at' => now()->subDays(2),
+            'expected_at' => now(),
+            'status_id' => $statuses->random()->id,
+        ]);
 
-        foreach ($this->priorities as $priority) {
-            Priority::firstOrCreate(['name' => $priority]);
-        }
-
-        foreach ($this->statuses as $status) {
-            Status::firstOrCreate(['name' => $status]);
-        }
+        $tasks = factory(Task::class, 4)
+        ->create(['priority_id' => $priorities->random()->id])
+        ->each
+        ->assignToProject($project);
     }
 }

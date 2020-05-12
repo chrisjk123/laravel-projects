@@ -27,6 +27,7 @@ class CreateTasksTable extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->text('notes')->nullable();
+
             $table->boolean('complete')->nullable()->default(false);
 
             // TODO:

@@ -2,10 +2,9 @@
 
 namespace Chriscreates\Projects\Models;
 
-use Illuminate\Database\Eloquent\Builder;
+use Chriscreates\Projects\Collections\RecordsCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Support\Facades\DB;
 
 class Record extends Model
 {
@@ -22,53 +21,41 @@ class Record extends Model
         'time_to',
     ];
 
-    protected $appends = [
-        'hours',
-    ];
-
-    /**
-     * The "booted" method of the model.
-     *
-     * @return void
-     */
-    protected static function booted()
-    {
-        parent::boot();
-
-        static::addGlobalScope('hours', function (Builder $builder) {
-            $builder->select('*');
-            $builder->addSelect(
-                DB::raw('ROUND(TIMESTAMPDIFF(MINUTE, `time_from`, `time_to`)/60, 2) as `hours`')
-            );
-        });
-    }
-
     public function recordable() : MorphTo
     {
         return $this->morphTo();
     }
 
-    public function getHoursAttribute() : float
+    public function getDeductableHours()
     {
-        if (is_null($this->time_from) || is_null($this->time_to)) {
+        if ( ! $this->deductable && ! $this->deduct_hours) {
             return 0;
         }
 
-        $hours = $this->time_from->floatDiffInRealHours($this->time_to, false);
-
-        return $hours;
+        return $this->deduct_hours;
     }
 
-    public function hours($rounded_up = false)
+    public function getRecordableHours()
     {
-        if ( ! isset($this->attributes['hours']) || empty($this->attributes['hours'])) {
+        if ($this->add_hours && ! $this->deductable) {
+            return $this->add_hours;
+        }
+
+        if ( ! $this->time_from || ! $this->time_to) {
             return 0;
         }
 
-        if ($rounded_up) {
-            return round($this->attributes['hours'] * 2) / 2;
-        }
+        return $this->time_from->floatDiffInRealHours($this->time_to, false);
+    }
 
-        return $this->attributes['hours'];
+    /**
+     * Create a new Eloquent Collection instance.
+     *
+     * @param  array  $models
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function newCollection(array $models = [])
+    {
+        return new RecordsCollection($models);
     }
 }

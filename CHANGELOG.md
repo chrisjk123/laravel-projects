@@ -39,6 +39,9 @@ All notable changes to `laravel-projects` will be documented in this file
 
 - Re-thought and moved structure around for both Projects and Tasks
 - Asserted more completion based tests for Projects
+- Resolving some minor validation tests
+- Refactored seeder class
+- Started on managing record time for tasks
 
 ### TODO/WIP:
 
