@@ -94,7 +94,7 @@ class Task extends Model
 
     public function addHours($time) : void
     {
-        $record = $this->records()->create([
+        $this->records()->create([
             'add_hours' => (float) $time,
             'deductable' => false,
         ]);

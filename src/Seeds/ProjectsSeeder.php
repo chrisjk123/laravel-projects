@@ -49,7 +49,7 @@ class ProjectsSeeder extends Seeder
             'status_id' => $statuses->random()->id,
         ]);
 
-        $tasks = factory(Task::class, 4)
+        factory(Task::class, 4)
         ->create(['priority_id' => $priorities->random()->id])
         ->each
         ->assignToProject($project);
