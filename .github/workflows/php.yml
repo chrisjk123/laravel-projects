@@ -7,17 +7,27 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
+    
+    services:
+            mysql:
+                image: mysql:5.7
+                env:
+                    MYSQL_ALLOW_EMPTY_PASSWORD: yes
+                    MYSQL_DATABASE: laravel_projects
+                ports:
+                    - 3306
+                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
-    - uses: actions/checkout@v2
-
-    - name: Validate composer.json and composer.lock
-      run: composer validate
+    - name: Checkout code
+      uses: actions/checkout@v1
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --no-suggest
            
     - name: Execute tests
       run: vendor/bin/phpunit
+      env:
+          DB_PORT: ${{ job.services.mysql.ports[3306] }}
