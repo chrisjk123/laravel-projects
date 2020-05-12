@@ -23,8 +23,6 @@ class Project extends Model
 
     public $timestamps = true;
 
-    private $user_model;
-
     protected $dates = [
         'started_at',
         'delivered_at',
@@ -37,8 +35,6 @@ class Project extends Model
 
     public function __construct(array $attributes = [])
     {
-        $this->user_model = config('projects.user_class');
-
         parent::__construct($attributes);
     }
 

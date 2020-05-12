@@ -28,9 +28,11 @@ class CreateProjectsTable extends Migration
             $table->text('description')->nullable();
             $table->text('notes')->nullable();
             $table->integer('visible')->default(1)->nullable();
+
             $table->timestamp('started_at')->nullable();
             $table->timestamp('delivered_at')->nullable();
             $table->timestamp('expected_at')->nullable();
+
             $table->timestamps();
             $table->softDeletes();
         });

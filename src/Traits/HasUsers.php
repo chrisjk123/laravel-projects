@@ -11,7 +11,12 @@ trait HasUsers
      */
     public function users() : BelongsToMany
     {
-        return $this->belongsToMany(get_class(user_model()), 'project_users', 'user_id', 'project_id');
+        return $this->belongsToMany(
+            get_class(user_model()),
+            'project_users',
+            'user_id',
+            'project_id'
+        );
     }
 
     /**
@@ -37,7 +42,9 @@ trait HasUsers
     {
         $keyed = collect($users)
         ->mapWithKeys(function ($user) use ($pivot_columns) {
-            return [$user instanceof $this->user_model ? $user->id : $user => $pivot_columns];
+            return [
+                is_a($user, user_model()) ? $user->id : $user => $pivot_columns,
+            ];
         })->toArray();
 
         $this->users()->syncWithoutDetaching($keyed);
@@ -57,7 +64,7 @@ trait HasUsers
      */
     public function removeUser($user) : self
     {
-        return $this->users()->detach($user instanceof $this->user_model ? $user->id : $user);
+        return $this->users()->detach(is_a($user, user_model()) ? $user->id : $user);
     }
 
     /**
@@ -69,8 +76,8 @@ trait HasUsers
     public function removeUsers(array $users = []) : self
     {
         $keyed = collect($users)
-        ->map(function ($user) {
-            return $user instanceof $this->user_model ? $user->id : $user;
+        ->map(function ($user) use ($user_model) {
+            return is_a($user, user_model()) ? $user->id : $user;
         })->toArray();
 
         $this->users()->detach($keyed);
@@ -90,6 +97,6 @@ trait HasUsers
      */
     public function hasUser($user) : bool
     {
-        return $this->users->contains('id', $user instanceof $this->user_model ? $user->id : $user);
+        return $this->users->contains('id', is_a($user, user_model()) ? $user->id : $user);
     }
 }

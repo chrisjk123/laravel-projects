@@ -3,7 +3,6 @@
 namespace Chriscreates\Projects\Tests;
 
 use Chriscreates\Projects\Models\Priority;
-use Chriscreates\Projects\Models\Status;
 use Chriscreates\Projects\Models\Task;
 use Chriscreates\Projects\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -39,42 +38,6 @@ class TaskTest extends TestCase
     }
 
     /** @test */
-    public function it_has_a_started_at_date()
-    {
-        $task = factory(Task::class)
-        ->create(['started_at' => now()]);
-
-        $this->assertEquals(
-            $task->started_at->toDateTimeString(),
-            now()->toDateTimeString()
-        );
-    }
-
-    /** @test */
-    public function it_has_a_delivered_at_date()
-    {
-        $task = factory(Task::class)
-        ->create(['delivered_at' => now()]);
-
-        $this->assertEquals(
-            $task->delivered_at->toDateTimeString(),
-            now()->toDateTimeString()
-        );
-    }
-
-    /** @test */
-    public function it_has_a_expected_at_date()
-    {
-        $task = factory(Task::class)
-        ->create(['expected_at' => now()]);
-
-        $this->assertEquals(
-            $task->expected_at->toDateTimeString(),
-            now()->toDateTimeString()
-        );
-    }
-
-    /** @test */
     public function it_has_can_be_associated_to_a_user()
     {
         $task = factory(Task::class)->create(['user_id' => null]);
@@ -86,20 +49,6 @@ class TaskTest extends TestCase
         $task->creator()->associate($user);
 
         $this->assertInstanceOf(User::class, $task->creator);
-    }
-
-    /** @test */
-    public function it_can_have_a_status()
-    {
-        $task = factory(Task::class)->create(['status_id' => null]);
-
-        $status = factory(Status::class)->create();
-
-        $this->assertNull($task->status);
-
-        $task->status()->associate($status);
-
-        $this->assertInstanceOf(Status::class, $task->status);
     }
 
     /** @test */

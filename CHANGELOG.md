@@ -35,6 +35,11 @@ All notable changes to `laravel-projects` will be documented in this file
 - Added necessary factory faker classes for testing purposes
 - Started basic PHPUnit tests for Projects and Tasks
 
+## 0.0.7 - 12-05-2020
+
+- Re-thought and moved structure around for both Projects and Tasks
+- Asserted more completion based tests for Projects
+
 ### TODO/WIP:
 
 - Scopes

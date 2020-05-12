@@ -15,21 +15,39 @@ trait IsMeasurable
     }
 
     /**
+     * Is the task still in process.
+     *
+     * @return bool
+     */
+    public function isInProcess() : bool
+    {
+        return $this->delivered_at === null;
+    }
+
+    /**
+     * Is the task not due yet.
+     *
+     * @return bool
+     */
+    public function notDueYet() : bool
+    {
+        return $this->expected_at->greaterThan(now());
+    }
+
+    /**
      * Is the task complete.
      *
      * @return bool
      */
-    public function isComplete() : bool
+    public function completed() : bool
     {
-        if ( ! $this->hasDateTarget()) {
+        if ( ! $this->hasDateTarget() || $this->isInProcess()) {
             return false;
         }
 
-        if ($this->isInProcess()) {
-            return false;
-        }
-
-        return $this->completedOnSchedule() || $this->completedAfterDeadline();
+        return ($this->completedOnSchedule()
+        || $this->completedAfterSchedule())
+        && $this->completedAllTasks();
     }
 
     /**
@@ -37,7 +55,7 @@ trait IsMeasurable
      *
      * @return bool
      */
-    public function completedAfterDeadline() : bool
+    public function completedAfterSchedule() : bool
     {
         return $this->delivered_at->greaterThan($this->expected_at);
     }
@@ -47,7 +65,7 @@ trait IsMeasurable
      *
      * @return bool
      */
-    public function completedBeforeDeadline() : bool
+    public function completedBeforeSchedule() : bool
     {
         return $this->delivered_at->lessThan($this->expected_at);
     }
@@ -59,17 +77,7 @@ trait IsMeasurable
      */
     public function completedOnSchedule() : bool
     {
-        return $this->completedBeforeDeadline() || $this->delivered_at->equalTo($this->expected_at);
-    }
-
-    /**
-     * Is the task still in process.
-     *
-     * @return bool
-     */
-    public function isInProcess() : bool
-    {
-        return $this->delivered_at === null;
+        return $this->delivered_at->lessThanOrEqualTo($this->expected_at);
     }
 
     /**
@@ -79,16 +87,22 @@ trait IsMeasurable
      */
     public function isOverdue() : bool
     {
-        return $this->isInProcess() && $this->notDueYet();
+        return $this->isInProcess() && ! $this->notDueYet();
     }
 
     /**
-     * Is the task not due yet.
+     * Have all tasks been completed.
      *
      * @return bool
      */
-    public function notDueYet() : bool
+    public function completedAllTasks() : bool
     {
-        return $this->expected_at->lessThan(now());
+        $this->load('tasks');
+
+        if ($this->tasks->isEmpty()) {
+            return true;
+        }
+
+        return $this->tasks->count() === $this->tasks->sum->completed();
     }
 }
