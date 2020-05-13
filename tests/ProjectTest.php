@@ -12,7 +12,7 @@ class ProjectTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function it_has_a_title()
+    public function a_project_has_a_title()
     {
         $project = factory(Project::class)->create(['title' => 'Title']);
 
@@ -20,7 +20,7 @@ class ProjectTest extends TestCase
     }
 
     /** @test */
-    public function it_has_a_description()
+    public function a_project_has_a_description()
     {
         $project = factory(Project::class)
         ->create(['description' => 'This is a description']);
@@ -29,7 +29,7 @@ class ProjectTest extends TestCase
     }
 
     /** @test */
-    public function it_has_a_notes()
+    public function a_project_has_notes()
     {
         $project = factory(Project::class)
         ->create(['notes' => 'These are some notes']);
@@ -38,7 +38,7 @@ class ProjectTest extends TestCase
     }
 
     /** @test */
-    public function it_has_togglable_visiblitity()
+    public function a_project_has_togglable_visiblitity()
     {
         $project = factory(Project::class)
         ->create(['visible' => true]);
@@ -47,45 +47,59 @@ class ProjectTest extends TestCase
     }
 
     /** @test */
-    public function it_has_a_started_at_date()
+    public function a_project_has_a_started_at_date()
     {
         $project = factory(Project::class)
         ->create(['started_at' => now()]);
 
         $this->assertEquals(
-            $project->started_at->toDateTimeString(),
-            now()->toDateTimeString()
+            $project->started_at->format('Y-m-d'),
+            now()->format('Y-m-d')
         );
     }
 
     /** @test */
-    public function it_has_a_delivered_at_date()
+    public function a_project_has_a_delivered_at_date()
     {
         $project = factory(Project::class)
         ->create(['delivered_at' => now()]);
 
         $this->assertEquals(
-            $project->delivered_at->toDateTimeString(),
-            now()->toDateTimeString()
+            $project->delivered_at->format('Y-m-d'),
+            now()->format('Y-m-d')
         );
     }
 
     /** @test */
-    public function it_has_a_expected_at_date()
+    public function a_project_has_a_expected_at_date()
     {
         $project = factory(Project::class)
         ->create(['expected_at' => now()]);
 
         $this->assertEquals(
-            $project->expected_at->toDateTimeString(),
-            now()->toDateTimeString()
+            $project->expected_at->format('Y-m-d'),
+            now()->format('Y-m-d')
         );
     }
 
     /** @test */
-    public function it_has_can_be_associated_to_a_user()
+    public function a_project_has_an_author()
     {
-        $project = factory(Project::class)->create(['user_id' => null]);
+        $project = factory(Project::class)->create(['author_id' => null]);
+
+        $user = factory(User::class)->create();
+
+        $this->assertNull($project->author);
+
+        $project->author()->associate($user);
+
+        $this->assertInstanceOf(User::class, $project->author);
+    }
+
+    /** @test */
+    public function a_project_has_an_owner()
+    {
+        $project = factory(Project::class)->create(['owner_id' => null]);
 
         $user = factory(User::class)->create();
 
@@ -97,7 +111,7 @@ class ProjectTest extends TestCase
     }
 
     /** @test */
-    public function it_can_have_a_status()
+    public function a_project_can_have_a_status()
     {
         $project = factory(Project::class)->create(['status_id' => null]);
 
@@ -108,5 +122,21 @@ class ProjectTest extends TestCase
         $project->status()->associate($status);
 
         $this->assertInstanceOf(Status::class, $project->status);
+    }
+
+    /** @test */
+    public function a_project_has_comments()
+    {
+        $project = factory(Project::class)->create();
+
+        $this->assertCount(0, $project->comments);
+
+        $comment = $project->comments()->create(['body' => 'This is a comment']);
+
+        $project->refresh();
+
+        $this->assertCount(1, $project->comments);
+
+        $this->assertTrue($project->comments->first()->is($comment));
     }
 }

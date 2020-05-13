@@ -7,6 +7,8 @@ use Faker\Generator as Faker;
 
 $factory->define(Project::class, function (Faker $faker) {
     return [
+        'author_id' => factory(User::class)->create()->id,
+        'owner_id' => factory(User::class)->create()->id,
         'title' => $faker->name,
         'description' => $faker->paragraph,
         'notes' => $faker->paragraph,
@@ -15,6 +17,5 @@ $factory->define(Project::class, function (Faker $faker) {
         'delivered_at' => now(),
         'expected_at' => now(),
         'status_id' => factory(Status::class)->create()->id,
-        'user_id' => factory(User::class)->create()->id,
     ];
 });

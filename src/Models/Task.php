@@ -46,6 +46,11 @@ class Task extends Model
         return $this->morphMany(Record::class, 'recordable');
     }
 
+    public function comments() : MorphMany
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
     public function assignTo($project) : void
     {
         $this->projects()->save($project);

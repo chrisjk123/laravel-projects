@@ -12,7 +12,7 @@ class TaskTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function it_has_a_title()
+    public function a_task_has_a_title()
     {
         $task = factory(Task::class)->create(['title' => 'Title']);
 
@@ -20,7 +20,7 @@ class TaskTest extends TestCase
     }
 
     /** @test */
-    public function it_has_a_description()
+    public function a_task_has_a_description()
     {
         $task = factory(Task::class)
         ->create(['description' => 'This is a description']);
@@ -29,7 +29,7 @@ class TaskTest extends TestCase
     }
 
     /** @test */
-    public function it_has_a_notes()
+    public function a_task_has_notes()
     {
         $task = factory(Task::class)
         ->create(['notes' => 'These are some notes']);
@@ -38,7 +38,7 @@ class TaskTest extends TestCase
     }
 
     /** @test */
-    public function it_has_can_be_associated_to_a_user()
+    public function a_task_can_be_associated_to_a_creator()
     {
         $task = factory(Task::class)->create(['user_id' => null]);
 
@@ -52,7 +52,7 @@ class TaskTest extends TestCase
     }
 
     /** @test */
-    public function it_can_have_a_priority()
+    public function a_task_can_have_a_priority()
     {
         $task = factory(Task::class)->create(['priority_id' => null]);
 
@@ -66,7 +66,7 @@ class TaskTest extends TestCase
     }
 
     /** @test */
-    public function it_can_be_created_from_the_command_line()
+    public function a_task_can_be_created_from_the_command_line()
     {
         $this->artisan('projects:create-task')
         ->expectsQuestion('Title', 'Test Title')
@@ -76,5 +76,21 @@ class TaskTest extends TestCase
         ->assertExitCode(0);
 
         $this->assertEquals(1, Task::count());
+    }
+
+    /** @test */
+    public function a_task_has_comments()
+    {
+        $task = factory(Task::class)->create();
+
+        $this->assertCount(0, $task->comments);
+
+        $comment = $task->comments()->create(['body' => 'This is a comment']);
+
+        $task->refresh();
+
+        $this->assertCount(1, $task->comments);
+
+        $this->assertTrue($task->comments->first()->is($comment));
     }
 }

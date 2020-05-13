@@ -8,6 +8,7 @@ use Chriscreates\Projects\Traits\HasStatus;
 use Chriscreates\Projects\Traits\HasUsers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\morphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Project extends Model
@@ -37,9 +38,14 @@ class Project extends Model
         parent::__construct($attributes);
     }
 
+    public function author() : BelongsTo
+    {
+        return $this->belongsTo(get_class(user_model()), 'author_id');
+    }
+
     public function owner() : BelongsTo
     {
-        return $this->belongsTo(get_class(user_model()));
+        return $this->belongsTo(get_class(user_model()), 'owner_id');
     }
 
     public function status() : BelongsTo
@@ -50,6 +56,11 @@ class Project extends Model
     public function tasks() : MorphToMany
     {
         return $this->morphedByMany(Task::class, 'projectable');
+    }
+
+    public function comments() : MorphMany
+    {
+        return $this->morphMany(Comment::class, 'commentable');
     }
 
     public function isVisible() : bool

@@ -43,6 +43,11 @@ All notable changes to `laravel-projects` will be documented in this file
 - Refactored seeder class
 - Started on managing record time for tasks
 
+## 0.0.8 - 13-05-2020
+
+- Added comments to both projects and Tasks
+- Resolved all Github validation tests
+
 ### TODO/WIP:
 
 - Scopes

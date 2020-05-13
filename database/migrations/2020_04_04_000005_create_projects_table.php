@@ -16,7 +16,11 @@ class CreateProjectsTable extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->foreignId('user_id')->nullable()
+            $table->foreignId('author_id')->nullable()
+            ->references(user_model()->getKeyName())
+            ->on(user_model()->getTable());
+
+            $table->foreignId('owner_id')->nullable()
             ->references(user_model()->getKeyName())
             ->on(user_model()->getTable());
 
