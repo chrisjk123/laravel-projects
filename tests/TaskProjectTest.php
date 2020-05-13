@@ -19,7 +19,7 @@ class TaskProjectTest extends TestCase
 
         $this->assertFalse($project->hasTask($task));
 
-        $task->assignToProject($project);
+        $task->assignTo($project);
 
         $project->refresh();
 

@@ -46,7 +46,7 @@ class Task extends Model
         return $this->morphMany(Record::class, 'recordable');
     }
 
-    public function assignToProject(Project $project) : void
+    public function assignTo($project) : void
     {
         $this->projects()->save($project);
 

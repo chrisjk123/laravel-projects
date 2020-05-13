@@ -2,6 +2,7 @@
 
 namespace Chriscreates\Projects;
 
+use Chriscreates\Projects\Commands\CreateTaskCommand;
 use Chriscreates\Projects\Commands\ProjectsConfigCommand;
 use Chriscreates\Projects\Commands\ProjectsSeederCommand;
 use Illuminate\Contracts\Container\BindingResolutionException;
@@ -91,6 +92,7 @@ class ProjectsServiceProvider extends ServiceProvider
         $this->commands([
             ProjectsConfigCommand::class,
             ProjectsSeederCommand::class,
+            CreateTaskCommand::class,
         ]);
     }
 }

@@ -64,4 +64,17 @@ class TaskTest extends TestCase
 
         $this->assertInstanceOf(Priority::class, $task->priority);
     }
+
+    /** @test */
+    public function it_can_be_created_from_the_command_line()
+    {
+        $this->artisan('projects:create-task')
+        ->expectsQuestion('Title', 'Test Title')
+        ->expectsQuestion('Description', 'Test Description')
+        ->expectsQuestion('Notes', 'Some Notes')
+        ->expectsQuestion('Complete', true)
+        ->assertExitCode(0);
+
+        $this->assertEquals(1, Task::count());
+    }
 }

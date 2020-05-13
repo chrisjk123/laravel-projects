@@ -107,7 +107,7 @@ class ProjectCompletionTest extends TestCase
 
         $tasks = factory(Task::class, 4)->create(['complete' => false]);
 
-        $tasks->each->assignToProject($project);
+        $tasks->each->assignTo($project);
 
         $this->assertFalse($project->completed());
 
