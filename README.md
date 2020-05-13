@@ -1,10 +1,10 @@
 # Add projects database tables to a Laravel app
 
-[![Version](https://poser.pugx.org/chrisjk123/laravel-projects/v/stable?format=flat-square)](https://packagist.org/packages/chrisjk123/laravel-projects)
-[![MIT Licensed](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/chrisjk123/laravel-projects/run-tests?label=tests)
-[![Quality Score](https://img.shields.io/scrutinizer/g/chrisjk123/laravel-projects.svg?style=flat-square)](https://scrutinizer-ci.com/g/chrisjk123/laravel-projects)
-[![Total Downloads](https://img.shields.io/packagist/dt/chrisjk123/laravel-projects.svg?style=flat-square)](https://packagist.org/packages/chrisjk123/laravel-projects)
+[![Version](https://img.shields.io/packagist/v/chrisjk123/laravel-projects.svg?include_prereleases&style=flat&label=packagist)](https://packagist.org/packages/chrisjk123/laravel-projects)
+[![MIT Licensed](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE.md)
+![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/chrisjk123/laravel-projects/run-tests?style=flat&label=tests)
+[![Quality Score](https://img.shields.io/scrutinizer/g/chrisjk123/laravel-projects.svg?style=flat)](https://scrutinizer-ci.com/g/chrisjk123/laravel-projects)
+[![Total Downloads](https://img.shields.io/packagist/dt/chrisjk123/laravel-projects.svg?style=flat)](https://packagist.org/packages/chrisjk123/laravel-projects)
 
 ## Table of Contents
 
