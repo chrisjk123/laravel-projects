@@ -48,6 +48,11 @@ All notable changes to `laravel-projects` will be documented in this file
 - Added comments to both projects and Tasks
 - Resolved all Github validation tests
 
+## 0.0.9 - 24-05-2020
+
+- Refactored tests
+- Removed unncessary code within the ServiceProvider
+
 ### TODO/WIP:
 
 - Scopes

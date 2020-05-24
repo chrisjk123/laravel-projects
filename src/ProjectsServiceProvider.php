@@ -5,28 +5,16 @@ namespace Chriscreates\Projects;
 use Chriscreates\Projects\Commands\CreateTaskCommand;
 use Chriscreates\Projects\Commands\ProjectsConfigCommand;
 use Chriscreates\Projects\Commands\ProjectsSeederCommand;
-use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\Factory;
-use Illuminate\Events\Dispatcher;
 use Illuminate\Support\ServiceProvider;
 
 class ProjectsServiceProvider extends ServiceProvider
 {
-
-    /**
-       * All of the event / listener mappings.
-       *
-       * @var array
-       */
-    protected $events = [];
-
     /**
      * Bootstrap the application services.
      */
     public function boot()
     {
-        $this->bootEvents();
-
         $this->bootFactories(projects_base_path('/database/factories'));
 
         $this->handleMigrations();
@@ -48,23 +36,6 @@ class ProjectsServiceProvider extends ServiceProvider
 
         foreach (glob(__DIR__.'/Helpers/*.php') as $file) {
             require_once($file);
-        }
-    }
-
-    /**
-     * Register the events and listeners.
-     *
-     * @return void
-     * @throws BindingResolutionException
-     */
-    private function bootEvents()
-    {
-        $events = $this->app->make(Dispatcher::class);
-
-        foreach ($this->events as $event => $listeners) {
-            foreach ($listeners as $listener) {
-                $events->listen($event, $listener);
-            }
         }
     }
 

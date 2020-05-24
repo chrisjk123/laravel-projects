@@ -33,11 +33,6 @@ class Project extends Model
         'visible' => 'bool',
     ];
 
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-    }
-
     public function author() : BelongsTo
     {
         return $this->belongsTo(get_class(user_model()), 'author_id');
@@ -95,21 +90,15 @@ class Project extends Model
     public function assignTask(Task $task) : void
     {
         $this->tasks()->save($task);
-
-        $this->refresh();
     }
 
     public function removeTask(Task $task) : void
     {
         $this->tasks()->detach($task);
-
-        $this->refresh();
     }
 
     public function hasTask(Task $task) : bool
     {
-        $this->refresh();
-
         return $this->tasks->contains($task->id);
     }
 
@@ -154,8 +143,7 @@ class Project extends Model
             return false;
         }
 
-        return ($this->completedOnSchedule()
-        || $this->completedAfterSchedule())
+        return ($this->completedOnSchedule() || $this->completedAfterSchedule())
         && $this->completedAllTasks();
     }
 

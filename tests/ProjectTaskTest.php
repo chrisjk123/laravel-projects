@@ -21,6 +21,8 @@ class ProjectTaskTest extends TestCase
 
         $project->assignTask($task);
 
+        $project->refresh();
+
         $this->assertEquals($project->tasks->count(), 1);
 
         $this->assertTrue($project->tasks->first()->is($task));
@@ -35,11 +37,15 @@ class ProjectTaskTest extends TestCase
 
         $project->assignTask($task);
 
+        $project->refresh();
+
         $this->assertEquals($project->tasks->count(), 1);
 
         $this->assertTrue($project->tasks->first()->is($task));
 
         $project->removeTask($task);
+
+        $project->refresh();
 
         $this->assertEquals($project->tasks->count(), 0);
     }
@@ -54,6 +60,8 @@ class ProjectTaskTest extends TestCase
         $this->assertFalse($project->hasTask($task));
 
         $project->assignTask($task);
+
+        $project->refresh();
 
         $this->assertEquals($project->tasks->count(), 1);
 
